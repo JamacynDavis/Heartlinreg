@@ -21,19 +21,19 @@ heart.shape
 # Used for statistical representations of the data 
 heart.describe()
 
-# Prints information like the total number of data entries, null values and so forth 
+# Prints information like the total number of data entries and null values
 heart.info()
 
-# import matplotlib 
+# Import matplotlib 
 import matplotlib.pyplot as plt 
 import seaborn as sns 
 
-# Creating a pairplot of the data 
+# Creating a pairplot of the data using seaborn
 sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 4, aspect = 1, kind = 'scatter')
 plt.show()
 
 # Creating a heatmap represenation of the data
-sns.heatmap(heart.corr(), annot=True)
+sns.heatmap(heart.corr(), cmap = 'Blues', annot=True)
 plt.show() 
 
 
