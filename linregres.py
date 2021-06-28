@@ -29,11 +29,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 
 # Creating a pairplot of the data using seaborn
-sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 4, aspect = 1, kind = 'scatter')
+sns.pairplot(heart, x_vars=['age', 'trtbps', 'sex'], y_vars='thalachh', size = 6, aspect = 1, kind = 'scatter')
 plt.show()
 
-# Creating a heatmap represenation of the data
-sns.heatmap(heart.corr(), cmap = 'Blues', annot=True)
+
+# Creating a heatmap represenation of the correlation
+sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
+plt.xlabel('Values on x axis')
+plt.ylabel('Values on y axis')
 plt.show() 
 
 
@@ -68,7 +71,7 @@ res = (y_train - y_train_pred)
 # Creating a histogram using the residual values found earlier
 fig = plt.figure() 
 sns.distplot(res, bins=10)
-plt.title("Error", fontsize = 14)
+plt.title("Error", fontsize = 11)
 plt.xlabel('y_train - y_train_pred', fontsize = 10)
 plt.show()
 
@@ -76,7 +79,11 @@ plt.show()
 plt.scatter(x_train, res)
 plt.show() 
 
-
+# Calculating r squared 
+from sklearn.metrics import r2_score 
+r_2_value = r2_score(y_train, y_train_pred)
+print('r-squared value: ')
+print(r_2_value)
 # Now dealing with the test data 
 
 # adding a constant to the test data for x 
@@ -86,7 +93,6 @@ x_test_sm = model.add_constant(x_test)
 y_test_pred = lr.predict(x_test_sm)
 print(y_test_pred)
 
-from sklearn.metrics import r2_score 
 r_squared  = r2_score(y_test, y_test_pred)
 print('r squared value: ')
 print(r_squared)
@@ -95,3 +101,8 @@ plt.scatter(x_test, y_test)
 plt.plot(x_test, y_test_pred, 'r')
 plt.show()
 
+# Comparing the r squared value from the train and test data 
+print('\nThis is the r squared value from the test data: ')
+print(r_squared)
+print('This is the r squared data from the train data: ')
+print(r_2_value)
