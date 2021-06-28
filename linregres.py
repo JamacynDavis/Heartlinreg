@@ -1,4 +1,7 @@
-# Linear regression model for heart data using the OLS test. 
+# Linear regression model for heart data using the OLS test. This model compares age and maximum heart rate 
+# to see if there is a correlation between them. Through this model it shows that there is not a very strong 
+# correlation as the r squared value is around 0.2, which shows that it only accounts for 20% of the variation 
+# in the data. 
 # Jamacyn Davis 
 # June 28, 2021 
 
@@ -38,7 +41,6 @@ sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
 plt.xlabel('Values on x axis')
 plt.ylabel('Values on y axis')
 plt.show() 
-
 
 x = heart['age']
 y = heart['thalachh']
