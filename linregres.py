@@ -6,13 +6,21 @@
 import warnings 
 warnings.filterwarnings('ignore')
 
-
 # Import numpy 
 import numpy as np 
 import pandas as pd 
 
+# Allowing the user to choose the file
+from tkinter import Tk     # from tkinter import Tk for Python 3.x
+from tkinter.filedialog import askopenfilename
+
+Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
+filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
+print(filename)
+
 # Read in the given CSV file 
-heart = pd.read_csv('heart.csv')
+heart = pd.read_csv(filename)
+# heart = cudf.read_csv('/data/sample.csv')
 print(heart)
 
 # Indicates the number of dimensions
@@ -32,13 +40,11 @@ import seaborn as sns
 sns.pairplot(heart, x_vars=['age', 'trtbps', 'sex'], y_vars='thalachh', size = 6, aspect = 1, kind = 'scatter')
 plt.show()
 
-
 # Creating a heatmap represenation of the correlation
 sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
 plt.xlabel('Values on x axis')
 plt.ylabel('Values on y axis')
 plt.show() 
-
 
 x = heart['age']
 y = heart['thalachh']
