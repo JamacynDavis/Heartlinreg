@@ -40,15 +40,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 
 # Creating a pairplot of the data using seaborn
-sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
-plt.show()
+# sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
+# plt.show()
 
 # Creating a heatmap represenation of the correlation
-figure = plt.figure(figsize = (10, 10))
-sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
-plt.xlabel('Values on x axis')
-plt.ylabel('Values on y axis')
-plt.show() 
+# figure = plt.figure(figsize = (10, 10))
+# sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
+# plt.xlabel('Values on x axis')
+# plt.ylabel('Values on y axis')
+# plt.show() 
 
 x = heart['age']
 y = heart['thalachh']
@@ -124,7 +124,7 @@ print(r_2_value)
 import tkinter as tk 
 from tkinter import * 
 from tkinter.constants import BOTH
-from PIL import Image, ImageTk
+from PIL import Image
 
 class Window(Frame):
     # Creates basic window 
@@ -157,32 +157,93 @@ class Window(Frame):
         SPLabel.place(x = 10, y = 150)
 
         # Heat map button and label 
-        HMButton = Button(self, text = 'Heat Map')
+        HMButton = Button(self, text = 'Heat Map', command = self.showImg2)
         HMButton.place(x = 350, y = 200)
         HMLabel = Label(self, text = 'Display Heat Map')
         HMLabel.place(x = 10, y = 200)
 
         # Regression line button and label
-        RLButton = Button(self, text = 'Regression Line')
+        RLButton = Button(self, text = 'Regression Line', command = self.showImg3)
         RLButton.place(x = 350, y = 250)
         RLLabel = Label(self, text = 'Display Regression Line on Sactter PLot')
         RLLabel.place(x = 10, y = 250)
 
         # Scatter plot with residual 
-        RSPButton = Button(self, text = 'Residual')
+        RSPButton = Button(self, text = 'Residual', command = self.showImg4)
         RSPButton.place(x = 350, y = 300)
         RSPLabel = Label(self, text = 'Display the residual on a scatter plot')
         RSPLabel.place(x = 10, y = 300)
+
+        # Histogram with residual data 
+        RButton = Button(self, text = 'Histogram', command = self.showImg5)
+        RButton.place(x = 350, y = 350)
+        RLabel = Label(self, text = 'Histogram showing the residual values')
+        RLabel.place(x = 10, y = 350)
+
+        # Button that allows you to see all the calculations done on the data 
+        DButton = Button(self, text = 'Display calculations', command = self.displayData)
+        DButton.place(x = 350, y = 400)
+        DLabel = Label(self, text = 'Display calculations done in the terminal')
+        DLabel.place(x = 10, y = 400)
+
+        # Label for 
+
 
     def client_exit(self): 
         exit()  
 
     def showImg(self):
-        load = Image.open('ScatterPlots.png')
-        render = ImageTk.PhotoImage(load) 
-        img = Label(self, image=render)
-        img.image = render 
-        img.place(x=0, y=0)
+        sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
+        plt.show()
+        # load = Image.open('ScatterPlots.png')
+        # render = ImageTk.PhotoImage(load) 
+        # img = Label(self, image=render)
+        # img.image = render 
+        # img.place(x=0, y=0)
+
+    def showImg2(self): 
+        figure = plt.figure(figsize = (10, 10))
+        sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
+        plt.xlabel('Values on x axis')
+        plt.ylabel('Values on y axis')
+        plt.show() 
+
+    def showImg3(self): 
+        plt.scatter(x_train, y_train)
+        plt.plot(x_train, 201.157201 - 0.949434 * x_train, 'r')
+        plt.show()
+
+    def showImg4(self): 
+        plt.scatter(x_train, res)
+        plt.show() 
+
+    def showImg5(self): 
+        fig = plt.figure(figsize = (10, 10)) 
+        sns.distplot(res, bins=10)
+        plt.title("Error", fontsize = 11)
+        plt.xlabel('y_train - y_train_pred', fontsize = 10)
+        plt.show()
+
+    def displayData(self):
+        x = heart['age']
+        y = heart['thalachh']
+
+        # Splitting the data into train and test sets (100% random)
+        from sklearn.model_selection import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+
+        print("\n")
+        print(x_train)
+        print(y_train)
+
+        import statsmodels.api as model 
+        x_train_sm = model.add_constant(x_train)
+
+        lr = model.OLS(y_train, x_train_sm).fit()
+        print(lr.params)
+        #print('*****************', type(lr.params))
+        print(lr.summary())
+
 
 root = Tk() 
 root.geometry('600x600')
