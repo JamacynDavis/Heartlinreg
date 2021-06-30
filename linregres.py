@@ -9,7 +9,6 @@
 import warnings 
 warnings.filterwarnings('ignore')
 
-
 # Import numpy 
 import numpy as np 
 import pandas as pd 
@@ -32,11 +31,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 
 # Creating a pairplot of the data using seaborn
-sns.pairplot(heart, x_vars=['age', 'trtbps', 'sex'], y_vars='thalachh', size = 6, aspect = 1, kind = 'scatter')
+sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
 plt.show()
 
 
 # Creating a heatmap represenation of the correlation
+figure = plt.figure(figsize = (10, 10))
 sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
 plt.xlabel('Values on x axis')
 plt.ylabel('Values on y axis')
@@ -71,7 +71,7 @@ y_train_pred = lr.predict(x_train_sm)
 res = (y_train - y_train_pred)
 
 # Creating a histogram using the residual values found earlier
-fig = plt.figure() 
+fig = plt.figure(figsize = (10, 10)) 
 sns.distplot(res, bins=10)
 plt.title("Error", fontsize = 11)
 plt.xlabel('y_train - y_train_pred', fontsize = 10)
@@ -108,3 +108,76 @@ print('\nThis is the r squared value from the test data: ')
 print(r_squared)
 print('This is the r squared data from the train data: ')
 print(r_2_value)
+
+
+
+
+#Attempting to add GUI controls 
+import tkinter as tk 
+from tkinter import * 
+from tkinter.constants import BOTH
+from PIL import Image, ImageTk
+
+class Window(Frame):
+    # Creates basic window 
+    def __init__(self, master=None):        
+        Frame.__init__(self, master)
+        self.master = master 
+        self.init__window() 
+
+    def init__window(self): 
+        self.master.title("Regression Model")
+        self.pack(fill = BOTH, expand = 1) 
+
+        # quitButton = Button(self, text = "Quit", command = self.client_exit)
+        # quitButton.place(x=0, y=0)
+
+        menu = Menu(self.master)
+        self.master.config(menu=menu)
+        file = Menu(menu)
+        file.add_command(label='Exit', command=self.client_exit)
+        menu.add_cascade(label='File', menu=file)
+        edit = Menu(menu)
+        # edit.add_command(label='Add Image', command=self.showImg)
+        # edit.add_command(label='Add Text', command=self.showTxt)
+        menu.add_cascade(label='Edit', menu=edit)
+
+        # Scatter plot button and label
+        SPButton = Button(self, text = 'Scatter Plot', command = self.showImg)
+        SPButton.place(x = 350, y = 150)
+        SPLabel = Label(self, text = 'Display Scatter Plot')
+        SPLabel.place(x = 10, y = 150)
+
+        # Heat map button and label 
+        HMButton = Button(self, text = 'Heat Map')
+        HMButton.place(x = 350, y = 200)
+        HMLabel = Label(self, text = 'Display Heat Map')
+        HMLabel.place(x = 10, y = 200)
+
+        # Regression line button and label
+        RLButton = Button(self, text = 'Regression Line')
+        RLButton.place(x = 350, y = 250)
+        RLLabel = Label(self, text = 'Display Regression Line on Sactter PLot')
+        RLLabel.place(x = 10, y = 250)
+
+        # Scatter plot with residual 
+        RSPButton = Button(self, text = 'Residual')
+        RSPButton.place(x = 350, y = 300)
+        RSPLabel = Label(self, text = 'Display the residual on a scatter plot')
+        RSPLabel.place(x = 10, y = 300)
+
+    def client_exit(self): 
+        exit()  
+
+    def showImg(self):
+        load = Image.open('ScatterPlots.png')
+        render = ImageTk.PhotoImage(load) 
+        img = Label(self, image=render)
+        img.image = render 
+        img.place(x=0, y=0)
+
+root = Tk() 
+root.geometry('600x600')
+app = Window(root)
+root.mainloop()
+
