@@ -79,7 +79,7 @@ y_train_pred = lr.predict(x_train_sm)
 res = (y_train - y_train_pred)
 
 # Creating a histogram using the residual values found earlier
-fig = plt.figure(figsize = (10, 10)) 
+fig = plt.figure(figsize = (6, 6)) 
 sns.distplot(res, bins=10)
 plt.title("Error", fontsize = 11)
 plt.xlabel('y_train - y_train_pred', fontsize = 10)
@@ -118,8 +118,6 @@ print('This is the r squared data from the train data: ')
 print(r_2_value)
 
 
-
-
 #Attempting to add GUI controls 
 import tkinter as tk 
 from tkinter import * 
@@ -146,48 +144,47 @@ class Window(Frame):
         file.add_command(label='Exit', command=self.client_exit)
         menu.add_cascade(label='File', menu=file)
         edit = Menu(menu)
-        # edit.add_command(label='Add Image', command=self.showImg)
-        # edit.add_command(label='Add Text', command=self.showTxt)
         menu.add_cascade(label='Edit', menu=edit)
 
         # Scatter plot button and label
-        SPButton = Button(self, text = 'Scatter Plot', command = self.showImg)
+        SPButton = Button(self, text = 'Scatter Plot', command = self.showImg, bg='MediumPurple1')
         SPButton.place(x = 350, y = 150)
         SPLabel = Label(self, text = 'Display Scatter Plot')
         SPLabel.place(x = 10, y = 150)
 
         # Heat map button and label 
-        HMButton = Button(self, text = 'Heat Map', command = self.showImg2)
+        HMButton = Button(self, text = 'Heat Map', command = self.showImg2, bg='MediumPurple1')
         HMButton.place(x = 350, y = 200)
         HMLabel = Label(self, text = 'Display Heat Map')
         HMLabel.place(x = 10, y = 200)
 
         # Regression line button and label
-        RLButton = Button(self, text = 'Regression Line', command = self.showImg3)
+        RLButton = Button(self, text = 'Regression Line', command = self.showImg3, bg='MediumPurple1')
         RLButton.place(x = 350, y = 250)
         RLLabel = Label(self, text = 'Display Regression Line on Sactter PLot')
         RLLabel.place(x = 10, y = 250)
 
         # Scatter plot with residual 
-        RSPButton = Button(self, text = 'Residual', command = self.showImg4)
+        RSPButton = Button(self, text = 'Residual', command = self.showImg4, bg='MediumPurple1')
         RSPButton.place(x = 350, y = 300)
         RSPLabel = Label(self, text = 'Display the residual on a scatter plot')
         RSPLabel.place(x = 10, y = 300)
 
         # Histogram with residual data 
-        RButton = Button(self, text = 'Histogram', command = self.showImg5)
+        RButton = Button(self, text = 'Histogram', command = self.showImg5, bg='MediumPurple1')
         RButton.place(x = 350, y = 350)
         RLabel = Label(self, text = 'Histogram showing the residual values')
         RLabel.place(x = 10, y = 350)
 
         # Button that allows you to see all the calculations done on the data 
-        DButton = Button(self, text = 'Display calculations', command = self.displayData)
+        DButton = Button(self, text = 'Display calculations', command = self.displayData, bg='MediumPurple1')
         DButton.place(x = 350, y = 400)
         DLabel = Label(self, text = 'Display calculations done in the terminal')
         DLabel.place(x = 10, y = 400)
 
-        # Label for 
-
+        # Creating text area 
+        Input = Entry(self, width=30)
+        Input.place(x=130 ,y=100)
 
     def client_exit(self): 
         exit()  
@@ -195,30 +192,27 @@ class Window(Frame):
     def showImg(self):
         sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
         plt.show()
-        # load = Image.open('ScatterPlots.png')
-        # render = ImageTk.PhotoImage(load) 
-        # img = Label(self, image=render)
-        # img.image = render 
-        # img.place(x=0, y=0)
 
     def showImg2(self): 
-        figure = plt.figure(figsize = (10, 10))
+        figure = plt.figure(figsize = (9, 9))
         sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
         plt.ylabel('Values on y axis')
         plt.show() 
 
     def showImg3(self): 
+        fig = plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, y_train)
         plt.plot(x_train, 201.157201 - 0.949434 * x_train, 'r')
         plt.show()
 
     def showImg4(self): 
+        fig = plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, res)
         plt.show() 
 
     def showImg5(self): 
-        fig = plt.figure(figsize = (10, 10)) 
+        fig = plt.figure(figsize = (9, 9)) 
         sns.distplot(res, bins=10)
         plt.title("Error", fontsize = 11)
         plt.xlabel('y_train - y_train_pred', fontsize = 10)
@@ -243,7 +237,6 @@ class Window(Frame):
         print(lr.params)
         #print('*****************', type(lr.params))
         print(lr.summary())
-
 
 root = Tk() 
 root.geometry('600x600')
