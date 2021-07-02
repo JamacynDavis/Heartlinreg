@@ -137,8 +137,8 @@ class Window(Frame):
         self.master.title("Regression Model")
         self.pack(fill = BOTH, expand = 1) 
 
-        # quitButton = Button(self, text = "Quit", command = self.client_exit)
-        # quitButton.place(x=0, y=0)
+        quitButton = Button(self, text = "x", command = self.client_exit, bg = 'Red')
+        quitButton.place(x=1325, y=0)
 
         menu = Menu(self.master)
         self.master.config(menu=menu)
@@ -150,37 +150,37 @@ class Window(Frame):
 
         # Scatter plot button and label
         SPButton = Button(self, text = 'Scatter Plot', command = self.showImg, bg='MediumPurple1')
-        SPButton.place(x = 450, y = 150)
+        SPButton.place(x = 500, y = 150)
         SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
         SPLabel.place(x = 10, y = 150)
 
         # Heat map button and label 
         HMButton = Button(self, text = 'Heat Map', command = self.showImg2, bg='MediumPurple1')
-        HMButton.place(x = 450, y = 200)
+        HMButton.place(x = 500, y = 200)
         HMLabel = Label(self, text = 'Display heat map', font = 'Latha')
         HMLabel.place(x = 10, y = 200)
 
         # Regression line button and label
         RLButton = Button(self, text = 'Regression Line', command = self.showImg3, bg='MediumPurple1')
-        RLButton.place(x = 450, y = 250)
+        RLButton.place(x = 500, y = 250)
         RLLabel = Label(self, text = 'Display regression line on scatter plot', font = 'Latha')
         RLLabel.place(x = 10, y = 250)
 
         # Scatter plot with residual 
         RSPButton = Button(self, text = 'Residual', command = self.showImg4, bg='MediumPurple1')
-        RSPButton.place(x = 450, y = 300)
+        RSPButton.place(x = 500, y = 300)
         RSPLabel = Label(self, text = 'Display the residual on a scatter plot', font = 'Latha')
         RSPLabel.place(x = 10, y = 300)
 
         # Button that allows you to see all the calculations done on the data 
         DButton = Button(self, text = 'Display calculations', command = self.displayData, bg='MediumPurple1')
-        DButton.place(x = 450, y = 400)
+        DButton.place(x = 500, y = 400)
         DLabel = Label(self, text = 'Display calculations done in the terminal', font = 'Latha')
         DLabel.place(x = 10, y = 400)
 
         # Histogram with residual data 
         RButton = Button(self, text = 'Histogram', command = self.showImg5, bg='MediumPurple1')
-        RButton.place(x = 450, y = 350)
+        RButton.place(x = 500, y = 350)
         RLabel = Label(self, text = 'Histogram showing the residual values', font = 'Latha')
         RLabel.place(x = 10, y = 350)
 
@@ -202,26 +202,32 @@ class Window(Frame):
         CSVLabel = Label(self, text = 'Choose the CSV file instead of manually typing it in', font = 'Latha')
         CSVLabel.place(x = 10, y = 50)
         
-        # Creating text area 
-        e = Entry(root, width = 40)
+        # Creating text box 
+        e = Entry(root, width = 30)
         e.pack()
         e.place(x = 200, y = 105)
 
         # Creating button for reading in a file
         FButton = Button(root, text = 'Enter', command = File, bg='MediumPurple1')
-        FButton.place(x = 450, y = 100)
+        FButton.place(x = 500, y = 100)
 
         # Creating button to display the r squared values for the test and train data sets 
         RButton = Button(self, text = "R-Squared", command = self.displayRSquared, bg = 'MediumPurple1')
-        RButton.place(x = 450, y = 450)
+        RButton.place(x = 500, y = 450)
 
-        # Creating canvas 
-        # global cv
-        # cv = tk.Canvas(root, height = 200, width = 800, borderwidth = 1, bg = 'snow')
-        # cv.pack(side = 'left', expand = TRUE)
-        
-        textbx = Text(root, height = 15, width = 90, bg = 'snow')
-        textbx.pack(side = 'left', expand = True)
+        # Creating scroll bar for Text area 
+        global scrollbar
+        global textbx
+        # Creating Text area 
+        # scrollbar = Scrollbar(textbx, bg = 'MediumPurple1')
+        # scrollbar.pack(side = RIGHT, fill = Y)
+        textbx = Text(root, height = 20, width = 80, bg = 'snow')
+        textbx.place(x = 700, y = 100)
+        # scrollbar.config(command = textbx.yview)
+
+        # Creating clear button for text 
+        clearButton = Button(self, text = 'Clear', command = self.clearContents, bg = 'MediumPurple1')
+        clearButton.place(x = 980, y = 500)
 
     def client_exit(self): 
         exit()  
@@ -279,10 +285,7 @@ class Window(Frame):
 
         lr = model.OLS(y_train, x_train_sm).fit()
         
-        cv.create_text(text = str(lr.params))
-        print(lr.params)
-        #print('*****************', type(lr.params))
-        print(lr.summary())
+        textbx.insert('0.2', str(lr.summary())+ str(lr.params))
 
     def displayRSquared(self): 
         # Calculating r squared 
@@ -298,13 +301,20 @@ class Window(Frame):
 
         r_squared  = r2_score(y_test, y_test_pred)
 
+        textbx.insert('0.2', '\nThis is the r squared value from the test data: ' + str(r_squared) + '\n\n'+ 'This is the r squared data from the train data: ' + str(r_2_value))
         print('\nThis is the r squared value from the test data: ')
         print(r_squared)
         print('\n')
         print('This is the r squared data from the train data: ')
         print(r_2_value)
 
-root = Tk() 
+    def clearContents(self): 
+        textbx.delete('0.2', 'end')
+        
+
+
+root = Tk()
+root.attributes("-fullscreen", True)
 root.geometry('600x900')
 app = Window(root)
 root.mainloop()
