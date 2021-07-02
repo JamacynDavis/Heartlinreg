@@ -208,7 +208,7 @@ class Window(Frame):
 
         # Creating button for reading in a file
         FButton = Button(root, text = 'Enter', command = File, bg='MediumPurple1')
-        FButton.place(x = 450, y = 100)
+        FButton.place(x = 500, y = 100)
 
         # Creating button to display the r squared values for the test and train data sets 
         RButton = Button(self, text = "R-Squared", command = self.displayRSquared, bg = 'MediumPurple1')
