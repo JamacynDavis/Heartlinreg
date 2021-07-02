@@ -151,19 +151,19 @@ class Window(Frame):
         # Scatter plot button and label
         SPButton = Button(self, text = 'Scatter Plot', command = self.showImg, bg='MediumPurple1')
         SPButton.place(x = 450, y = 150)
-        SPLabel = Label(self, text = 'Display Scatter Plot', font = 'Latha')
+        SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
         SPLabel.place(x = 10, y = 150)
 
         # Heat map button and label 
         HMButton = Button(self, text = 'Heat Map', command = self.showImg2, bg='MediumPurple1')
         HMButton.place(x = 450, y = 200)
-        HMLabel = Label(self, text = 'Display Heat Map', font = 'Latha')
+        HMLabel = Label(self, text = 'Display heat map', font = 'Latha')
         HMLabel.place(x = 10, y = 200)
 
         # Regression line button and label
         RLButton = Button(self, text = 'Regression Line', command = self.showImg3, bg='MediumPurple1')
         RLButton.place(x = 450, y = 250)
-        RLLabel = Label(self, text = 'Display Regression Line on Sactter PLot', font = 'Latha')
+        RLLabel = Label(self, text = 'Display regression line on scatter plot', font = 'Latha')
         RLLabel.place(x = 10, y = 250)
 
         # Scatter plot with residual 
@@ -193,22 +193,23 @@ class Window(Frame):
             print(filename)
             pd.read_csv(filename)
             return None
+
         # Creating Button for reading in a CSV file 
         CSVButton = Button(self, text = "Read CSV", command = self.readCSV, bg = 'MediumPurple1')
-        CSVButton.place(x = 450, y = 50)
+        CSVButton.place(x = 500, y = 50)
 
         # Creating label for the CSV button above 
         CSVLabel = Label(self, text = 'Choose the CSV file instead of manually typing it in', font = 'Latha')
         CSVLabel.place(x = 10, y = 50)
         
         # Creating text area 
-        e = Entry(root, width = 20)
+        e = Entry(root, width = 40)
         e.pack()
-        e.place(x = 200, y = 100)
+        e.place(x = 200, y = 105)
 
         # Creating button for reading in a file
         FButton = Button(root, text = 'Enter', command = File, bg='MediumPurple1')
-        FButton.place(x = 500, y = 100)
+        FButton.place(x = 450, y = 100)
 
         # Creating button to display the r squared values for the test and train data sets 
         RButton = Button(self, text = "R-Squared", command = self.displayRSquared, bg = 'MediumPurple1')
@@ -304,4 +305,3 @@ root = Tk()
 root.geometry('600x900')
 app = Window(root)
 root.mainloop()
-
