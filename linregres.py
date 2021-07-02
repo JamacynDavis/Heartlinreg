@@ -216,9 +216,12 @@ class Window(Frame):
         RButton.place(x = 450, y = 450)
 
         # Creating canvas 
-        global cv
-        cv = tk.Canvas(root, height = 200, width = 800, borderwidth = 1, bg = 'snow')
-        cv.pack(side = 'left', expand = TRUE)
+        # global cv
+        # cv = tk.Canvas(root, height = 200, width = 800, borderwidth = 1, bg = 'snow')
+        # cv.pack(side = 'left', expand = TRUE)
+        
+        textbx = Text(root, height = 15, width = 90, bg = 'snow')
+        textbx.pack(side = 'left', expand = True)
 
     def client_exit(self): 
         exit()  
