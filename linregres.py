@@ -229,51 +229,70 @@ class Window(Frame):
         clearButton = Button(self, text = 'Clear', command = self.clearContents, bg = 'MediumPurple1')
         clearButton.place(x = 980, y = 500)
 
-        def showImg(self):
-            xValue = e1.get()
-            yValue = e2.get() 
-            zValue = e3.get() 
 
-            x_vars = [xValue, yValue] # cHECK ON GITHUB FOR THE VALUES 
-            y_vars = zValue
-            sns.pairplot(heart, x_vars, y_vars, size = 5, aspect = 1, kind = 'scatter')
-            plt.show()
 
-        # Scatter plot button and label
-        SPButton = Button(self, text = 'Scatter Plot', command = self.showImg, bg='MediumPurple1')
-        SPButton.place(x = 500, y = 150)
-        SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
-        SPLabel.place(x = 10, y = 150)
 
 
         # DELETE IF NEEDED 
         # Creating text boxes 
-        e1 = Entry(root, width = 10)
-        e1.pack()
-        e1.place(x = 700, y = 50)
+        # e1 = Entry(root, width = 10)
+        # e1.pack()
+        # e1.place(x = 700, y = 50)
 
-        e2 = Entry(root, width = 10)
-        e2.pack()
-        e2.place(x = 800, y = 50)
+        # e2 = Entry(root, width = 10)
+        # e2.pack()
+        # e2.place(x = 800, y = 50)
 
-        e3 = Entry(root, width = 10)
-        e3.pack()
-        e3.place(x = 900, y = 50)
+        # e3 = Entry(root, width = 10)
+        # e3.pack()
+        # e3.place(x = 900, y = 50)
+
+        # Creating text drop down options 
+
+        # Scatter plot button and label
+
+
+        def showImg():
+            variable = clicked.get()
+            variable2 = clicked2.get() 
+            variable3 = clicked3.get() 
+
+            sns.pairplot(heart, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1, kind = 'scatter')
+            plt.show()
+        
+        SPButton = Button(self, text = 'Scatter Plot', command = showImg, bg='MediumPurple1')
+        SPButton.place(x = 500, y = 150)
+        SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
+        SPLabel.place(x = 10, y = 150)
+        
+        def display_selected():
+            clicked.get()
+
+        clicked = StringVar()
+        option1 = OptionMenu(root, clicked, "age", "sex", "fbs", "chol","Go","Ruby", command = display_selected)
+        option1.place(x = 700, y = 50)
+
+        clicked2 = StringVar() 
+        option2 = OptionMenu(root, clicked2, 'trtbps')
+        option2.place(x = 800, y = 50)
+
+        clicked3 = StringVar()
+        option3 = OptionMenu(root, clicked3, 'thalachh')
+        option3.place(x = 900, y = 50)
 
         # CAN BE DELETED 
         # Creating label 
         varLabel = Label(self, text = 'Enter three varaibles that will be used in the graphs and other calc', font = 'Latha')
         varLabel.place(x = 10, y = 50)
 
-        enterButton = Button(self, text = 'Enter', bg = 'MediumPurple1')
-        enterButton.place(x = 1000, y = 50)
+
 
 
     def client_exit(self): 
         exit()  
 
 
- # pUT BACK 
+
     def showImg2(self): 
         plt.figure(figsize = (9, 9))
         sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
