@@ -1,14 +1,13 @@
 # Linear regression model for heart data using the OLS test. This model compares age and maximum heart rate 
 # to see if there is a correlation between them. Through this model it shows that there is not a very strong 
 # correlation as the r squared value is around 0.2, which shows that it only accounts for 20% of the variation 
-# in the data. 
-# Jamacyn Davis 
+# in the data which is provided by Kaggle.com. 
+# Jamacyn Davis                 
 # June 28, 2021 
 
 # Supress warnings 
 import warnings
 
-from seaborn.distributions import ecdfplot 
 warnings.filterwarnings('ignore')
 
 # Import numpy 
@@ -17,7 +16,7 @@ import pandas as pd
 
 # Allowing the user to choose the file
 from tkinter import Tk     # from tkinter import Tk for Python 3.x
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, asksaveasfile
 
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
@@ -148,11 +147,6 @@ class Window(Frame):
         edit = Menu(menu)
         menu.add_cascade(label='Edit', menu=edit)
 
-        # Scatter plot button and label
-        SPButton = Button(self, text = 'Scatter Plot', command = self.showImg, bg='MediumPurple1')
-        SPButton.place(x = 500, y = 150)
-        SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
-        SPLabel.place(x = 10, y = 150)
 
         # Heat map button and label 
         HMButton = Button(self, text = 'Heat Map', command = self.showImg2, bg='MediumPurple1')
@@ -196,11 +190,11 @@ class Window(Frame):
 
         # Creating Button for reading in a CSV file 
         CSVButton = Button(self, text = "Read CSV", command = self.readCSV, bg = 'MediumPurple1')
-        CSVButton.place(x = 500, y = 50)
+        CSVButton.place(x = 500, y = 10)
 
         # Creating label for the CSV button above 
         CSVLabel = Label(self, text = 'Choose the CSV file instead of manually typing it in', font = 'Latha')
-        CSVLabel.place(x = 10, y = 50)
+        CSVLabel.place(x = 10, y = 10)
         
         # Creating text box 
         e = Entry(root, width = 30)
@@ -215,47 +209,91 @@ class Window(Frame):
         RButton = Button(self, text = "R-Squared", command = self.displayRSquared, bg = 'MediumPurple1')
         RButton.place(x = 500, y = 450)
 
-        # Creating scroll bar for Text area 
-        global scrollbar
+        def file_save():
+            # w in mode stands for write 
+            name = asksaveasfile(mode='w', defaultextension = ".txt")
+            text2save = str(textbx.get(2.0, END))
+            name.write(text2save)
+            name.close()
+
+        # Creating button for saving input as a file 
+        saveButton = Button(self, text = 'Save', command = file_save, bg = 'MediumPurple1')
+        saveButton.place(x = 980, y = 450)
+
+        # Text area 
         global textbx
-        # Creating Text area 
-        # scrollbar = Scrollbar(textbx, bg = 'MediumPurple1')
-        # scrollbar.pack(side = RIGHT, fill = Y)
         textbx = Text(root, height = 20, width = 80, bg = 'snow')
         textbx.place(x = 700, y = 100)
-        # scrollbar.config(command = textbx.yview)
 
         # Creating clear button for text 
         clearButton = Button(self, text = 'Clear', command = self.clearContents, bg = 'MediumPurple1')
         clearButton.place(x = 980, y = 500)
 
+        def showImg(self):
+            xValue = e1.get()
+            yValue = e2.get() 
+            zValue = e3.get() 
+
+            x_vars = [xValue, yValue] # cHECK ON GITHUB FOR THE VALUES 
+            y_vars = zValue
+            sns.pairplot(heart, x_vars, y_vars, size = 5, aspect = 1, kind = 'scatter')
+            plt.show()
+
+        # Scatter plot button and label
+        SPButton = Button(self, text = 'Scatter Plot', command = self.showImg, bg='MediumPurple1')
+        SPButton.place(x = 500, y = 150)
+        SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
+        SPLabel.place(x = 10, y = 150)
+
+
+        # DELETE IF NEEDED 
+        # Creating text boxes 
+        e1 = Entry(root, width = 10)
+        e1.pack()
+        e1.place(x = 700, y = 50)
+
+        e2 = Entry(root, width = 10)
+        e2.pack()
+        e2.place(x = 800, y = 50)
+
+        e3 = Entry(root, width = 10)
+        e3.pack()
+        e3.place(x = 900, y = 50)
+
+        # CAN BE DELETED 
+        # Creating label 
+        varLabel = Label(self, text = 'Enter three varaibles that will be used in the graphs and other calc', font = 'Latha')
+        varLabel.place(x = 10, y = 50)
+
+        enterButton = Button(self, text = 'Enter', bg = 'MediumPurple1')
+        enterButton.place(x = 1000, y = 50)
+
+
     def client_exit(self): 
         exit()  
 
-    def showImg(self):
-        sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
-        plt.show()
 
+ # pUT BACK 
     def showImg2(self): 
-        figure = plt.figure(figsize = (9, 9))
+        plt.figure(figsize = (9, 9))
         sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
         plt.ylabel('Values on y axis')
         plt.show() 
 
     def showImg3(self): 
-        fig = plt.figure(figsize = (6, 6)) 
+        plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, y_train)
         plt.plot(x_train, 201.157201 - 0.949434 * x_train, 'r')
         plt.show()
 
     def showImg4(self): 
-        fig = plt.figure(figsize = (6, 6)) 
+        plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, res)
         plt.show() 
 
     def showImg5(self): 
-        fig = plt.figure(figsize = (9, 9)) 
+        plt.figure(figsize = (9, 9)) 
         sns.distplot(res, bins=10)
         plt.title("Error", fontsize = 11)
         plt.xlabel('y_train - y_train_pred', fontsize = 10)
@@ -307,12 +345,11 @@ class Window(Frame):
         print('\n')
         print('This is the r squared data from the train data: ')
         print(r_2_value)
-
+        print('\n')
+        
     def clearContents(self): 
         textbx.delete('0.2', 'end')
         
-
-
 root = Tk()
 root.attributes("-fullscreen", True)
 root.geometry('600x900')
