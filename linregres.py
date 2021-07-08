@@ -1,4 +1,4 @@
-# Linear regression model for heart data using the OLS test. This model compares age and maximum heart rate 
+# Linear regression model for fileObject data using the OLS test. This model compares age and maximum fileObject rate 
 # to see if there is a correlation between them. Through this model it shows that there is not a very strong 
 # correlation as the r squared value is around 0.2, which shows that it only accounts for 20% of the variation 
 # in the data which is provided by Kaggle.com. 
@@ -6,9 +6,9 @@
 # June 28, 2021 
 
 # Supress warnings 
-import warnings
+# import warnings
 
-warnings.filterwarnings('ignore')
+# warnings.filterwarnings('ignore')
 
 # Import numpy 
 import numpy as np 
@@ -18,66 +18,66 @@ import pandas as pd
 from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename, asksaveasfile
 
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
+# Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-print(filename)
+# print(filename)
 
 # Read in the given CSV file 
-heart = pd.read_csv(filename)
-# heart = cudf.read_csv('/data/sample.csv')
-print(heart)
+fileObject = pd.read_csv(filename)
+# fileObject = cudf.read_csv('/data/sample.csv') leave commented out
+# print(fileObject)
 
 # Indicates the number of dimensions
-heart.shape
+# fileObject.shape
 
 # Used for statistical representations of the data 
-heart.describe()
+# fileObject.describe()
 
 # Prints information like the total number of data entries and null values
-heart.info()
+# fileObject.info()
 
 # Import matplotlib 
 import matplotlib.pyplot as plt 
 import seaborn as sns 
 
 # Creating a pairplot of the data using seaborn
-# sns.pairplot(heart, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
+# sns.pairplot(fileObject, x_vars=['age', 'trtbps'], y_vars='thalachh', size = 5, aspect = 1, kind = 'scatter')
 # plt.show()
 
 # Creating a heatmap represenation of the correlation
 # figure = plt.figure(figsize = (10, 10))
-# sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
+# sns.heatmap(fileObject.corr(), cmap = 'PuBu', annot=True)
 # plt.xlabel('Values on x axis')
 # plt.ylabel('Values on y axis')
 # plt.show() 
 
-x = heart['age']
-y = heart['thalachh']
+# x = fileObject['age']
+# y = fileObject['thalachh']
 
 # Splitting the data into train and test sets (100% random)
-from sklearn.model_selection import train_test_split
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+# from sklearn.model_selection import train_test_split
+# x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
 
-print("\n")
-print(x_train)
-print(y_train)
+# print("\n")
+# print(x_train)
+# print(y_train)
 
 import statsmodels.api as model 
-x_train_sm = model.add_constant(x_train)
+# x_train_sm = model.add_constant(x_train)
 
-lr = model.OLS(y_train, x_train_sm).fit()
-print(lr.params)
-print(lr.summary())
+# lr = model.OLS(y_train, x_train_sm).fit()
+# print(lr.params)
+# print(lr.summary())
 
 # plt.scatter(x_train, y_train)
 # plt.plot(x_train, 201.157201 - 0.949434 * x_train, 'r')
 # plt.show()
 
 #predicting the y values based on the regression line 
-y_train_pred = lr.predict(x_train_sm)
+# y_train_pred = lr.predict(x_train_sm)
 
 #residual 
-res = (y_train - y_train_pred)
+# res = (y_train - y_train_pred)
 
 # Creating a histogram using the residual values found earlier
 # fig = plt.figure(figsize = (6, 6)) 
@@ -92,41 +92,50 @@ res = (y_train - y_train_pred)
 
 # Calculating r squared 
 from sklearn.metrics import r2_score 
-r_2_value = r2_score(y_train, y_train_pred)
-print('r-squared value: ')
-print(r_2_value)
+# r_2_value = r2_score(y_train, y_train_pred)
+# print('r-squared value: ')
+# print(r_2_value)
 # Now dealing with the test data 
 
 # adding a constant to the test data for x 
-x_test_sm = model.add_constant(x_test)
+# x_test_sm = model.add_constant(x_test)
 
 # predict 
-y_test_pred = lr.predict(x_test_sm)
-print(y_test_pred)
+# y_test_pred = lr.predict(x_test_sm)
+# print(y_test_pred)
 
-r_squared  = r2_score(y_test, y_test_pred)
-print('r squared value: ')
-print(r_squared)
+# r_squared  = r2_score(y_test, y_test_pred)
+# print('r squared value: ')
+# print(r_squared)
 
 # plt.scatter(x_test, y_test)
 # plt.plot(x_test, y_test_pred, 'r')
 # plt.show()
 
 # Comparing the r squared value from the train and test data 
-print('\nThis is the r squared value from the test data: ')
-print(r_squared)
-print('This is the r squared data from the train data: ')
-print(r_2_value)
+# print('\nThis is the r squared value from the test data: ')
+# print(r_squared)
+# print('This is the r squared data from the train data: ')
+# print(r_2_value)
 
 
 #Attempting to add GUI controls 
 import tkinter as tk 
 from tkinter import * 
 from tkinter.constants import BOTH
-from PIL import Image
+
+# list of col headers
+headers = ['choose']
 
 class Window(Frame):
-    # Creates basic window 
+    #added by jordan
+    clicked = None
+    clicked2 = None
+    clicked3 = None
+    option1 = None
+    option2 = None
+    option3 = None
+
     def __init__(self, master=None):        
         Frame.__init__(self, master)
         self.master = master 
@@ -146,7 +155,6 @@ class Window(Frame):
         menu.add_cascade(label='File', menu=file)
         edit = Menu(menu)
         menu.add_cascade(label='Edit', menu=edit)
-
 
         # Heat map button and label 
         HMButton = Button(self, text = 'Heat Map', command = self.showImg2, bg='MediumPurple1')
@@ -183,13 +191,15 @@ class Window(Frame):
         FLabel.place(x = 10, y = 100)
 
         def File(): 
+            import pandas as pd
             filename = e.get()
             print(filename)
-            pd.read_csv(filename)
+            fileObject = pd.read_csv(filename)
+
             return None
 
         # Creating Button for reading in a CSV file 
-        CSVButton = Button(self, text = "Read CSV", command = self.readCSV, bg = 'MediumPurple1')
+        CSVButton = Button(self, text = 'Read CSV', command = self.readCSV, bg = 'MediumPurple1')
         CSVButton.place(x = 500, y = 10)
 
         # Creating label for the CSV button above 
@@ -229,89 +239,111 @@ class Window(Frame):
         clearButton = Button(self, text = 'Clear', command = self.clearContents, bg = 'MediumPurple1')
         clearButton.place(x = 980, y = 500)
 
-
-
-
-
-        # DELETE IF NEEDED 
-        # Creating text boxes 
-        # e1 = Entry(root, width = 10)
-        # e1.pack()
-        # e1.place(x = 700, y = 50)
-
-        # e2 = Entry(root, width = 10)
-        # e2.pack()
-        # e2.place(x = 800, y = 50)
-
-        # e3 = Entry(root, width = 10)
-        # e3.pack()
-        # e3.place(x = 900, y = 50)
-
-        # Creating text drop down options 
-
-        # Scatter plot button and label
-
-
+        # Creating text drop down options
         def showImg():
-            variable = clicked.get()
-            variable2 = clicked2.get() 
-            variable3 = clicked3.get() 
+            variable = self.clicked.get()
+            variable2 = self.clicked2.get() 
+            variable3 = self.clicked3.get() 
 
-            sns.pairplot(heart, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1, kind = 'scatter')
+            sns.pairplot(fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1, kind = 'scatter')
             plt.show()
         
         SPButton = Button(self, text = 'Scatter Plot', command = showImg, bg='MediumPurple1')
         SPButton.place(x = 500, y = 150)
         SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
         SPLabel.place(x = 10, y = 150)
-        
+        '''
         def display_selected():
             clicked.get()
-
         clicked = StringVar()
-        option1 = OptionMenu(root, clicked, "age", "sex", "fbs", "chol","Go","Ruby", command = display_selected)
-        option1.place(x = 700, y = 50)
+        clicked = StringVar(root)
+        clicked.set(headers[0])
+        option1 = OptionMenu(root, clicked, command = display_selected, *headers)
+        option1.place(x = 850, y = 50)
 
-        clicked2 = StringVar() 
-        option2 = OptionMenu(root, clicked2, 'trtbps')
-        option2.place(x = 800, y = 50)
-
+        clicked2 = StringVar()
+        option2 = OptionMenu(root, clicked2, 'test')
+        option2.place(x = 950, y = 50)
+        
         clicked3 = StringVar()
         option3 = OptionMenu(root, clicked3, 'thalachh')
-        option3.place(x = 900, y = 50)
-
-        # CAN BE DELETED 
+        option3.place(x = 1050, y = 50)
+        '''
         # Creating label 
-        varLabel = Label(self, text = 'Enter three varaibles that will be used in the graphs and other calc', font = 'Latha')
+        varLabel = Label(self, text = 'Enter three values that will be used for the scatter plot. The first two will be used in the calculations', font = 'Latha')
         varLabel.place(x = 10, y = 50)
-
-
-
 
     def client_exit(self): 
         exit()  
 
-
-
     def showImg2(self): 
         plt.figure(figsize = (9, 9))
-        sns.heatmap(heart.corr(), cmap = 'PuBu', annot=True)
+        sns.heatmap(fileObject.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
         plt.ylabel('Values on y axis')
         plt.show() 
 
-    def showImg3(self): 
+    def showImg3(self):
+        variable = self.clicked.get()
+        variable2 = self.clicked2.get() 
+
+        x = fileObject[variable]
+        y = fileObject[variable2]
+
+        # Splitting the data into train and test sets (100% random)
+        from sklearn.model_selection import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+
+
         plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, y_train)
         plt.plot(x_train, 201.157201 - 0.949434 * x_train, 'r')
         plt.show()
 
     def showImg4(self): 
+        variable = self.clicked.get()
+        variable2 = self.clicked2.get() 
+
+        x = fileObject[variable]
+        y = fileObject[variable2]
+
+        # Splitting the data into train and test sets (100% random)
+        from sklearn.model_selection import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+
+        x_train_sm = model.add_constant(x_train)
+
+        lr = model.OLS(y_train, x_train_sm).fit()
+
+        #predicting the y values based on the regression line 
+        y_train_pred = lr.predict(x_train_sm)
+
+        #residual 
+        res = (y_train - y_train_pred)
         plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, res)
         plt.show() 
 
     def showImg5(self): 
+        variable = self.clicked.get()
+        variable2 = self.clicked2.get() 
+
+        x = fileObject[variable]
+        y = fileObject[variable2]
+
+        from sklearn.model_selection import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+
+        x_train_sm = model.add_constant(x_train)
+
+        lr = model.OLS(y_train, x_train_sm).fit()
+
+        #predicting the y values based on the regression line 
+        y_train_pred = lr.predict(x_train_sm)
+
+        #residual 
+        res = (y_train - y_train_pred)
+
         plt.figure(figsize = (9, 9)) 
         sns.distplot(res, bins=10)
         plt.title("Error", fontsize = 11)
@@ -323,19 +355,34 @@ class Window(Frame):
         filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 
         # Read in the given CSV file 
-        pd.read_csv(filename)
+        fileObject = pd.read_csv(filename)
+        headers = []
+        headers = list(fileObject.columns)
+        self.fillheaderdropdown(headers)
+        
+    def fillheaderdropdown(self, headers):
+        self.clicked = StringVar(root)
+        self.option1 = OptionMenu(root, self.clicked, *headers)
+        self.option1.place(x = 850, y = 50)
 
+        self.clicked2 = StringVar(root) 
+        self.option2 = OptionMenu(root, self.clicked2, *headers)
+        self.option2.place(x = 950, y = 50)
+
+        self.clicked3 = StringVar(root)
+        self.option3 = OptionMenu(root, self.clicked3, *headers)
+        self.option3.place(x = 1050, y = 50)
+    
     def displayData(self):
-        x = heart['age']
-        y = heart['thalachh']
+        variable = self.clicked.get()
+        variable2 = self.clicked2.get() 
+        
+        x = fileObject[variable]
+        y = fileObject[variable2]
 
         # Splitting the data into train and test sets (100% random)
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
-
-        print("\n")
-        print(x_train)
-        print(y_train)
 
         import statsmodels.api as model 
         x_train_sm = model.add_constant(x_train)
@@ -345,6 +392,23 @@ class Window(Frame):
         textbx.insert('0.2', str(lr.summary())+ str(lr.params))
 
     def displayRSquared(self): 
+        variable = self.clicked.get()
+        variable2 = self.clicked2.get() 
+
+        x = fileObject[variable]
+        y = fileObject[variable2]
+
+        from sklearn.model_selection import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+
+        import statsmodels.api as model 
+        x_train_sm = model.add_constant(x_train)
+
+        lr = model.OLS(y_train, x_train_sm).fit()
+
+        #predicting the y values based on the regression line 
+        y_train_pred = lr.predict(x_train_sm)
+
         # Calculating r squared 
         from sklearn.metrics import r2_score 
         r_2_value = r2_score(y_train, y_train_pred)
@@ -358,13 +422,7 @@ class Window(Frame):
 
         r_squared  = r2_score(y_test, y_test_pred)
 
-        textbx.insert('0.2', '\nThis is the r squared value from the test data: ' + str(r_squared) + '\n\n'+ 'This is the r squared data from the train data: ' + str(r_2_value))
-        print('\nThis is the r squared value from the test data: ')
-        print(r_squared)
-        print('\n')
-        print('This is the r squared data from the train data: ')
-        print(r_2_value)
-        print('\n')
+        textbx.insert('0.2', '\nThis is the r squared value from the test data: ' + str(r_squared) + '\n\n'+ 'This is the r squared data from the train data: ' + str(r_2_value) + '\n')
         
     def clearContents(self): 
         textbx.delete('0.2', 'end')
