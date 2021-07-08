@@ -21,7 +21,6 @@ from tkinter.filedialog import askopenfilename, asksaveasfile
 # Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 # print(filename)
-
 # Read in the given CSV file 
 fileObject = pd.read_csv(filename)
 # fileObject = cudf.read_csv('/data/sample.csv') leave commented out
@@ -91,7 +90,7 @@ import statsmodels.api as model
 # plt.show() 
 
 # Calculating r squared 
-from sklearn.metrics import r2_score 
+# from sklearn.metrics import r2_score 
 # r_2_value = r2_score(y_train, y_train_pred)
 # print('r-squared value: ')
 # print(r_2_value)
@@ -126,7 +125,7 @@ from tkinter.constants import BOTH
 
 # list of col headers
 headers = ['choose']
-
+Equation = ['choose']
 class Window(Frame):
     #added by jordan
     clicked = None
@@ -194,8 +193,7 @@ class Window(Frame):
             import pandas as pd
             filename = e.get()
             print(filename)
-            fileObject = pd.read_csv(filename)
-
+            pd.read_csv(filename)
             return None
 
         # Creating Button for reading in a CSV file 
@@ -245,6 +243,8 @@ class Window(Frame):
             variable2 = self.clicked2.get() 
             variable3 = self.clicked3.get() 
 
+            # fileObject = pd.read_csv(askopenfilename())
+
             sns.pairplot(fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1, kind = 'scatter')
             plt.show()
         
@@ -252,23 +252,7 @@ class Window(Frame):
         SPButton.place(x = 500, y = 150)
         SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
         SPLabel.place(x = 10, y = 150)
-        '''
-        def display_selected():
-            clicked.get()
-        clicked = StringVar()
-        clicked = StringVar(root)
-        clicked.set(headers[0])
-        option1 = OptionMenu(root, clicked, command = display_selected, *headers)
-        option1.place(x = 850, y = 50)
 
-        clicked2 = StringVar()
-        option2 = OptionMenu(root, clicked2, 'test')
-        option2.place(x = 950, y = 50)
-        
-        clicked3 = StringVar()
-        option3 = OptionMenu(root, clicked3, 'thalachh')
-        option3.place(x = 1050, y = 50)
-        '''
         # Creating label 
         varLabel = Label(self, text = 'Enter three values that will be used for the scatter plot. The first two will be used in the calculations', font = 'Latha')
         varLabel.place(x = 10, y = 50)
@@ -277,6 +261,8 @@ class Window(Frame):
         exit()  
 
     def showImg2(self): 
+        # fileObject = pd.read_csv(filename.read)
+
         plt.figure(figsize = (9, 9))
         sns.heatmap(fileObject.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
@@ -284,6 +270,8 @@ class Window(Frame):
         plt.show() 
 
     def showImg3(self):
+        # fileObject = pd.read_csv(askopenfilename())
+
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
@@ -294,13 +282,26 @@ class Window(Frame):
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
 
+        x_train_sm = model.add_constant(x_train)
+
+        lr = model.OLS(y_train, x_train_sm).fit()
+        Equation = []
+        Equation = list(lr.params)
+
+        y_intercept = Equation[0]
+        slope = Equation[1]
+
+        print(y_intercept)
+        print(slope)
 
         plt.figure(figsize = (6, 6)) 
         plt.scatter(x_train, y_train)
-        plt.plot(x_train, 201.157201 - 0.949434 * x_train, 'r')
+        plt.plot(x_train, y_intercept + slope * x_train , 'r')
         plt.show()
 
     def showImg4(self): 
+        # fileObject = pd.read_csv(askopenfilename())
+
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
@@ -325,6 +326,8 @@ class Window(Frame):
         plt.show() 
 
     def showImg5(self): 
+        # fileObject = pd.read_csv(askopenfilename())
+
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
@@ -374,6 +377,8 @@ class Window(Frame):
         self.option3.place(x = 1050, y = 50)
     
     def displayData(self):
+        # fileObject = pd.read_csv(askopenfilename())
+
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
         
@@ -392,6 +397,8 @@ class Window(Frame):
         textbx.insert('0.2', str(lr.summary())+ str(lr.params))
 
     def displayRSquared(self): 
+        # fileObject = pd.read_csv(askopenfilename())
+
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
