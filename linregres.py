@@ -23,7 +23,8 @@ filename = askopenfilename() # show an "Open" dialog box and return the path to 
 # print(filename)
 # Read in the given CSV file 
 fileObject = pd.read_csv(filename)
-# fileObject = cudf.read_csv('/data/sample.csv') leave commented out
+# fileObject = pd.DataFrame()
+# fileObject = cudf.read_csv('/data/sample.csv') # leave commented out
 # print(fileObject)
 
 # Indicates the number of dimensions
@@ -126,8 +127,8 @@ from tkinter.constants import BOTH
 # list of col headers
 headers = ['choose']
 Equation = ['choose']
+
 class Window(Frame):
-    #added by jordan
     clicked = None
     clicked2 = None
     clicked3 = None
@@ -245,7 +246,7 @@ class Window(Frame):
 
             # fileObject = pd.read_csv(askopenfilename())
 
-            sns.pairplot(fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1, kind = 'scatter')
+            sns.pairplot(fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1)#,kind = 'scatter')
             plt.show()
         
         SPButton = Button(self, text = 'Scatter Plot', command = showImg, bg='MediumPurple1')
@@ -262,7 +263,6 @@ class Window(Frame):
 
     def showImg2(self): 
         # fileObject = pd.read_csv(filename.read)
-
         plt.figure(figsize = (9, 9))
         sns.heatmap(fileObject.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
@@ -359,6 +359,7 @@ class Window(Frame):
 
         # Read in the given CSV file 
         fileObject = pd.read_csv(filename)
+        # fileObject = pd.read_csv(filename)
         headers = []
         headers = list(fileObject.columns)
         self.fillheaderdropdown(headers)
