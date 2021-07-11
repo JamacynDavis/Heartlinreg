@@ -5,6 +5,8 @@
 # Jamacyn Davis                 
 # June 28, 2021 
 
+# DELETE SELF IN FRONT OF ALL FILEOBJECTS AND DELETE THE FILEOBJECT = NONE
+
 # Supress warnings 
 # import warnings
 
@@ -19,10 +21,10 @@ from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename, asksaveasfile
 
 # Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
+# filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 # print(filename)
 # Read in the given CSV file 
-fileObject = pd.read_csv(filename)
+# fileObject = pd.read_csv(filename)
 # fileObject = pd.DataFrame()
 # fileObject = cudf.read_csv('/data/sample.csv') # leave commented out
 # print(fileObject)
@@ -135,6 +137,7 @@ class Window(Frame):
     option1 = None
     option2 = None
     option3 = None
+    fileObject = ()
 
     def __init__(self, master=None):        
         Frame.__init__(self, master)
@@ -244,9 +247,9 @@ class Window(Frame):
             variable2 = self.clicked2.get() 
             variable3 = self.clicked3.get() 
 
-            # fileObject = pd.read_csv(askopenfilename())
+            # fileObject = pd.read_csv(self.askopenfilename())
 
-            sns.pairplot(fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1)#,kind = 'scatter')
+            sns.pairplot(self.fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1)#,kind = 'scatter')
             plt.show()
         
         SPButton = Button(self, text = 'Scatter Plot', command = showImg, bg='MediumPurple1')
@@ -264,7 +267,7 @@ class Window(Frame):
     def showImg2(self): 
         # fileObject = pd.read_csv(filename.read)
         plt.figure(figsize = (9, 9))
-        sns.heatmap(fileObject.corr(), cmap = 'PuBu', annot=True)
+        sns.heatmap(self.fileObject.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
         plt.ylabel('Values on y axis')
         plt.show() 
@@ -275,8 +278,8 @@ class Window(Frame):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
-        x = fileObject[variable]
-        y = fileObject[variable2]
+        x = self.fileObject[variable]
+        y = self.fileObject[variable2]
 
         # Splitting the data into train and test sets (100% random)
         from sklearn.model_selection import train_test_split
@@ -305,8 +308,8 @@ class Window(Frame):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
-        x = fileObject[variable]
-        y = fileObject[variable2]
+        x = self.fileObject[variable]
+        y = self.fileObject[variable2]
 
         # Splitting the data into train and test sets (100% random)
         from sklearn.model_selection import train_test_split
@@ -331,8 +334,8 @@ class Window(Frame):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
-        x = fileObject[variable]
-        y = fileObject[variable2]
+        x = self.fileObject[variable]
+        y = self.fileObject[variable2]
 
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
@@ -383,8 +386,8 @@ class Window(Frame):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
         
-        x = fileObject[variable]
-        y = fileObject[variable2]
+        x = self.fileObject[variable]
+        y = self.fileObject[variable2]
 
         # Splitting the data into train and test sets (100% random)
         from sklearn.model_selection import train_test_split
@@ -403,8 +406,8 @@ class Window(Frame):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
-        x = fileObject[variable]
-        y = fileObject[variable2]
+        x = self.fileObject[variable]
+        y = self.fileObject[variable2]
 
         from sklearn.model_selection import train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
