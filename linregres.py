@@ -5,8 +5,6 @@
 # Jamacyn Davis                 
 # June 28, 2021 
 
-# DELETE SELF IN FRONT OF ALL FILEOBJECTS AND DELETE THE FILEOBJECT = NONE
-
 # Supress warnings 
 # import warnings
 
@@ -126,7 +124,7 @@ import tkinter as tk
 from tkinter import * 
 from tkinter.constants import BOTH
 
-# list of col headers
+# list of col headers and the equation is used for changing the regression line. 
 headers = ['choose']
 Equation = ['choose']
 
@@ -137,9 +135,9 @@ class Window(Frame):
     option1 = None
     option2 = None
     option3 = None
-    fileObject = ()
+    fileObject = None
 
-    def __init__(self, master=None):        
+    def __init__(self, master = None):        
         Frame.__init__(self, master)
         self.master = master 
         self.init__window() 
@@ -148,9 +146,6 @@ class Window(Frame):
         self.master.title("Regression Model")
         self.pack(fill = BOTH, expand = 1) 
 
-        quitButton = Button(self, text = "x", command = self.client_exit, bg = 'Red')
-        quitButton.place(x=1325, y=0)
-
         menu = Menu(self.master)
         self.master.config(menu=menu)
         file = Menu(menu)
@@ -158,6 +153,10 @@ class Window(Frame):
         menu.add_cascade(label='File', menu=file)
         edit = Menu(menu)
         menu.add_cascade(label='Edit', menu=edit)
+
+        # Quit button used in top right hand corder of GUI 
+        quitButton = Button(self, text = "x", command = self.client_exit, bg = 'Red')
+        quitButton.place(x=1325, y=0)
 
         # Heat map button and label 
         HMButton = Button(self, text = 'Heat Map', command = self.showImg2, bg='MediumPurple1')
@@ -193,12 +192,15 @@ class Window(Frame):
         FLabel = Label(self, text = 'Enter your CSV file:', font = 'Latha')
         FLabel.place(x = 10, y = 100)
 
+        # Function used for getting what they type in for the CSV file and reading it in to be used in the program
         def File(): 
             import pandas as pd
             filename = e.get()
             print(filename)
-            pd.read_csv(filename)
-            return None
+            self.fileObject = pd.read_csv(filename)
+            headers = []
+            headers = list(self.fileObject.columns)
+            self.fillheaderdropdown(headers)
 
         # Creating Button for reading in a CSV file 
         CSVButton = Button(self, text = 'Read CSV', command = self.readCSV, bg = 'MediumPurple1')
@@ -247,8 +249,6 @@ class Window(Frame):
             variable2 = self.clicked2.get() 
             variable3 = self.clicked3.get() 
 
-            # fileObject = pd.read_csv(self.askopenfilename())
-
             sns.pairplot(self.fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1)#,kind = 'scatter')
             plt.show()
         
@@ -265,7 +265,6 @@ class Window(Frame):
         exit()  
 
     def showImg2(self): 
-        # fileObject = pd.read_csv(filename.read)
         plt.figure(figsize = (9, 9))
         sns.heatmap(self.fileObject.corr(), cmap = 'PuBu', annot=True)
         plt.xlabel('Values on x axis')
@@ -273,8 +272,6 @@ class Window(Frame):
         plt.show() 
 
     def showImg3(self):
-        # fileObject = pd.read_csv(askopenfilename())
-
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
@@ -303,8 +300,6 @@ class Window(Frame):
         plt.show()
 
     def showImg4(self): 
-        # fileObject = pd.read_csv(askopenfilename())
-
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
@@ -329,8 +324,6 @@ class Window(Frame):
         plt.show() 
 
     def showImg5(self): 
-        # fileObject = pd.read_csv(askopenfilename())
-
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
@@ -361,28 +354,26 @@ class Window(Frame):
         filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 
         # Read in the given CSV file 
-        fileObject = pd.read_csv(filename)
-        # fileObject = pd.read_csv(filename)
+        self.fileObject = pd.read_csv(filename)
         headers = []
-        headers = list(fileObject.columns)
+        headers = list(self.fileObject.columns)
         self.fillheaderdropdown(headers)
         
     def fillheaderdropdown(self, headers):
         self.clicked = StringVar(root)
         self.option1 = OptionMenu(root, self.clicked, *headers)
-        self.option1.place(x = 850, y = 50)
+        self.option1.setvar(headers[0])
+        self.option1.place(x = 900, y = 50)
 
         self.clicked2 = StringVar(root) 
         self.option2 = OptionMenu(root, self.clicked2, *headers)
-        self.option2.place(x = 950, y = 50)
+        self.option2.place(x = 1000, y = 50)
 
         self.clicked3 = StringVar(root)
         self.option3 = OptionMenu(root, self.clicked3, *headers)
-        self.option3.place(x = 1050, y = 50)
+        self.option3.place(x = 1100, y = 50)
     
     def displayData(self):
-        # fileObject = pd.read_csv(askopenfilename())
-
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
         
@@ -401,8 +392,6 @@ class Window(Frame):
         textbx.insert('0.2', str(lr.summary())+ str(lr.params))
 
     def displayRSquared(self): 
-        # fileObject = pd.read_csv(askopenfilename())
-
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
 
