@@ -1,7 +1,4 @@
-# Linear regression model for fileObject data using the OLS test. This model compares age and maximum fileObject rate 
-# to see if there is a correlation between them. Through this model it shows that there is not a very strong 
-# correlation as the r squared value is around 0.2, which shows that it only accounts for 20% of the variation 
-# in the data which is provided by Kaggle.com. 
+# Linear regression model for fileObject data using the OLS test.
 # Jamacyn Davis                 
 # June 28, 2021 
 
@@ -124,7 +121,8 @@ import tkinter as tk
 from tkinter import * 
 from tkinter.constants import BOTH
 
-# list of col headers and the equation is used for changing the regression line. 
+# list of col headers used in filling the drop down menu 
+# Equation is used for changing the regression line based off the choices chosen
 headers = ['choose']
 Equation = ['choose']
 
@@ -151,8 +149,6 @@ class Window(Frame):
         file = Menu(menu)
         file.add_command(label='Exit', command=self.client_exit)
         menu.add_cascade(label='File', menu=file)
-        edit = Menu(menu)
-        menu.add_cascade(label='Edit', menu=edit)
 
         # Quit button used in top right hand corder of GUI 
         quitButton = Button(self, text = "x", command = self.client_exit, bg = 'Red')
@@ -188,11 +184,12 @@ class Window(Frame):
         RLabel = Label(self, text = 'Histogram showing the residual values', font = 'Latha')
         RLabel.place(x = 10, y = 350)
 
-        # Creating label 
+        # Creating label for text box which allows the CSV file to be read
         FLabel = Label(self, text = 'Enter your CSV file:', font = 'Latha')
         FLabel.place(x = 10, y = 100)
 
-        # Function used for getting what they type in for the CSV file and reading it in to be used in the program
+        # Function used for getting what they type in for the CSV file 
+        # Also fills the drop downs with options based on which CSV file they choose 
         def File(): 
             import pandas as pd
             filename = e.get()
@@ -223,6 +220,7 @@ class Window(Frame):
         RButton = Button(self, text = "R-Squared", command = self.displayRSquared, bg = 'MediumPurple1')
         RButton.place(x = 500, y = 450)
 
+        # Function used for saving a file 
         def file_save():
             # w in mode stands for write 
             name = asksaveasfile(mode='w', defaultextension = ".txt")
@@ -257,13 +255,15 @@ class Window(Frame):
         SPLabel = Label(self, text = 'Display scatter plot', font = 'Latha')
         SPLabel.place(x = 10, y = 150)
 
-        # Creating label 
-        varLabel = Label(self, text = 'Enter three values that will be used for the scatter plot. The first two will be used in the calculations', font = 'Latha')
+        # Creating label for the spinners/drop down options
+        varLabel = Label(self, text = 'Enter three values that will be used for the graphs. The first two will be used in the calculations', font = 'Latha')
         varLabel.place(x = 10, y = 50)
 
+    # exit function
     def client_exit(self): 
         exit()  
-
+    
+    # Function for creating a heat map based on correlation 
     def showImg2(self): 
         plt.figure(figsize = (9, 9))
         sns.heatmap(self.fileObject.corr(), cmap = 'PuBu', annot=True)
@@ -271,6 +271,7 @@ class Window(Frame):
         plt.ylabel('Values on y axis')
         plt.show() 
 
+    # Creating scatter plot with the regression line
     def showImg3(self):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
@@ -299,6 +300,7 @@ class Window(Frame):
         plt.plot(x_train, y_intercept + slope * x_train , 'r')
         plt.show()
 
+    # Residual scatter plot 
     def showImg4(self): 
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
@@ -323,6 +325,7 @@ class Window(Frame):
         plt.scatter(x_train, res)
         plt.show() 
 
+    # Histogram with residual values
     def showImg5(self): 
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
@@ -349,6 +352,7 @@ class Window(Frame):
         plt.xlabel('y_train - y_train_pred', fontsize = 10)
         plt.show()
 
+    # Reading in CSV file 
     def readCSV(self): 
         from tkinter.filedialog import askopenfilename
         filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
@@ -359,6 +363,7 @@ class Window(Frame):
         headers = list(self.fileObject.columns)
         self.fillheaderdropdown(headers)
         
+    # Function for filling in drop down menus
     def fillheaderdropdown(self, headers):
         self.clicked = StringVar(root)
         self.option1 = OptionMenu(root, self.clicked, *headers)
@@ -373,6 +378,7 @@ class Window(Frame):
         self.option3 = OptionMenu(root, self.clicked3, *headers)
         self.option3.place(x = 1100, y = 50)
     
+    # Function for displaying the data in a text field 
     def displayData(self):
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
@@ -391,6 +397,7 @@ class Window(Frame):
         
         textbx.insert('0.2', str(lr.summary())+ str(lr.params))
 
+    # Function for displaying r squared value
     def displayRSquared(self): 
         variable = self.clicked.get()
         variable2 = self.clicked2.get() 
@@ -423,7 +430,8 @@ class Window(Frame):
         r_squared  = r2_score(y_test, y_test_pred)
 
         textbx.insert('0.2', '\nThis is the r squared value from the test data: ' + str(r_squared) + '\n\n'+ 'This is the r squared data from the train data: ' + str(r_2_value) + '\n')
-        
+    
+    # Function for clearing the contents of the text field
     def clearContents(self): 
         textbx.delete('0.2', 'end')
         
