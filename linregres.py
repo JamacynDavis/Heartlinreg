@@ -144,6 +144,7 @@ class Window(Frame):
         self.master.title("Regression Model")
         self.pack(fill = BOTH, expand = 1) 
 
+        # Creates exit option in the menu
         menu = Menu(self.master)
         self.master.config(menu=menu)
         file = Menu(menu)
@@ -196,6 +197,7 @@ class Window(Frame):
             print(filename)
             self.fileObject = pd.read_csv(filename)
             headers = []
+            # .columns gives the header names used to fill the spinners
             headers = list(self.fileObject.columns)
             self.fillheaderdropdown(headers)
 
@@ -247,8 +249,18 @@ class Window(Frame):
             variable2 = self.clicked2.get() 
             variable3 = self.clicked3.get() 
 
-            sns.pairplot(self.fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1)#,kind = 'scatter')
-            plt.show()
+            if(variable == variable2): 
+                textbx.insert('0.2', 'Attributes chosen are the same, must choose different ones\n')
+            
+            elif(variable == variable3): 
+                textbx.insert('0.2', 'Attributes chosen are the same, must choose different ones\n')
+
+            elif(variable2 == variable3): 
+                textbx.insert('0.2', 'Attributes chosen are the same, must choose different ones\n')
+
+            else:
+                sns.pairplot(self.fileObject, x_vars=[variable, variable2], y_vars = variable3, size = 5, aspect = 1)#,kind = 'scatter')
+                plt.show()
         
         SPButton = Button(self, text = 'Scatter Plot', command = showImg, bg='MediumPurple1')
         SPButton.place(x = 500, y = 150)
@@ -279,26 +291,30 @@ class Window(Frame):
         x = self.fileObject[variable]
         y = self.fileObject[variable2]
 
-        # Splitting the data into train and test sets (100% random)
-        from sklearn.model_selection import train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+        if (variable == variable2): 
+            textbx.insert('0.2', 'First two attributes chosen are the same, must choose different ones\n')
+        
+        else:
+            # Splitting the data into train and test sets (100% random)
+            from sklearn.model_selection import train_test_split
+            x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
 
-        x_train_sm = model.add_constant(x_train)
+            x_train_sm = model.add_constant(x_train)
 
-        lr = model.OLS(y_train, x_train_sm).fit()
-        Equation = []
-        Equation = list(lr.params)
+            lr = model.OLS(y_train, x_train_sm).fit()
+            Equation = []
+            Equation = list(lr.params)
 
-        y_intercept = Equation[0]
-        slope = Equation[1]
+            y_intercept = Equation[0]
+            slope = Equation[1]
 
-        print(y_intercept)
-        print(slope)
+            print(y_intercept)
+            print(slope)
 
-        plt.figure(figsize = (6, 6)) 
-        plt.scatter(x_train, y_train)
-        plt.plot(x_train, y_intercept + slope * x_train , 'r')
-        plt.show()
+            plt.figure(figsize = (6, 6)) 
+            plt.scatter(x_train, y_train)
+            plt.plot(x_train, y_intercept + slope * x_train , 'r')
+            plt.show()
 
     # Residual scatter plot 
     def showImg4(self): 
@@ -308,22 +324,26 @@ class Window(Frame):
         x = self.fileObject[variable]
         y = self.fileObject[variable2]
 
+        if (variable == variable2): 
+            textbx.insert('0.2', 'First two attributes chosen are the same, must choose different ones\n')
+
+        else: 
         # Splitting the data into train and test sets (100% random)
-        from sklearn.model_selection import train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+            from sklearn.model_selection import train_test_split
+            x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
 
-        x_train_sm = model.add_constant(x_train)
+            x_train_sm = model.add_constant(x_train)
 
-        lr = model.OLS(y_train, x_train_sm).fit()
+            lr = model.OLS(y_train, x_train_sm).fit()
 
-        #predicting the y values based on the regression line 
-        y_train_pred = lr.predict(x_train_sm)
+            #predicting the y values based on the regression line 
+            y_train_pred = lr.predict(x_train_sm)
 
-        #residual 
-        res = (y_train - y_train_pred)
-        plt.figure(figsize = (6, 6)) 
-        plt.scatter(x_train, res)
-        plt.show() 
+            #residual 
+            res = (y_train - y_train_pred)
+            plt.figure(figsize = (6, 6)) 
+            plt.scatter(x_train, res)
+            plt.show() 
 
     # Histogram with residual values
     def showImg5(self): 
@@ -333,24 +353,28 @@ class Window(Frame):
         x = self.fileObject[variable]
         y = self.fileObject[variable2]
 
-        from sklearn.model_selection import train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+        if (variable == variable2): 
+            textbx.insert('0.2', 'First two attributes chosen are the same, must choose different ones\n')
 
-        x_train_sm = model.add_constant(x_train)
+        else: 
+            from sklearn.model_selection import train_test_split
+            x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
 
-        lr = model.OLS(y_train, x_train_sm).fit()
+            x_train_sm = model.add_constant(x_train)
 
-        #predicting the y values based on the regression line 
-        y_train_pred = lr.predict(x_train_sm)
+            lr = model.OLS(y_train, x_train_sm).fit()
 
-        #residual 
-        res = (y_train - y_train_pred)
+            #predicting the y values based on the regression line 
+            y_train_pred = lr.predict(x_train_sm)
 
-        plt.figure(figsize = (9, 9)) 
-        sns.distplot(res, bins=10)
-        plt.title("Error", fontsize = 11)
-        plt.xlabel('y_train - y_train_pred', fontsize = 10)
-        plt.show()
+            #residual 
+            res = (y_train - y_train_pred)
+
+            plt.figure(figsize = (9, 9)) 
+            sns.distplot(res, bins=10)
+            plt.title("Error", fontsize = 11)
+            plt.xlabel('y_train - y_train_pred', fontsize = 10)
+            plt.show()
 
     # Reading in CSV file 
     def readCSV(self): 
@@ -386,16 +410,20 @@ class Window(Frame):
         x = self.fileObject[variable]
         y = self.fileObject[variable2]
 
-        # Splitting the data into train and test sets (100% random)
-        from sklearn.model_selection import train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
-
-        import statsmodels.api as model 
-        x_train_sm = model.add_constant(x_train)
-
-        lr = model.OLS(y_train, x_train_sm).fit()
+        if (variable == variable2): 
+            textbx.insert('0.2', 'First two attributes chosen are the same, must choose different ones\n')
         
-        textbx.insert('0.2', str(lr.summary())+ str(lr.params))
+        else: 
+            # Splitting the data into train and test sets (100% random)
+            from sklearn.model_selection import train_test_split
+            x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+
+            import statsmodels.api as model 
+            x_train_sm = model.add_constant(x_train)
+
+            lr = model.OLS(y_train, x_train_sm).fit()
+            
+            textbx.insert('0.2', str(lr.summary())+ str(lr.params))
 
     # Function for displaying r squared value
     def displayRSquared(self): 
@@ -405,31 +433,35 @@ class Window(Frame):
         x = self.fileObject[variable]
         y = self.fileObject[variable2]
 
-        from sklearn.model_selection import train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
+        if (variable == variable2): 
+            textbx.insert('0.2', 'First two attributes chosen are the same, must choose different ones\n')
 
-        import statsmodels.api as model 
-        x_train_sm = model.add_constant(x_train)
+        else: 
+            from sklearn.model_selection import train_test_split
+            x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.7, test_size = 0.3, random_state = 100)
 
-        lr = model.OLS(y_train, x_train_sm).fit()
+            import statsmodels.api as model 
+            x_train_sm = model.add_constant(x_train)
 
-        #predicting the y values based on the regression line 
-        y_train_pred = lr.predict(x_train_sm)
+            lr = model.OLS(y_train, x_train_sm).fit()
 
-        # Calculating r squared 
-        from sklearn.metrics import r2_score 
-        r_2_value = r2_score(y_train, y_train_pred)
-        # Now dealing with the test data 
+            #predicting the y values based on the regression line 
+            y_train_pred = lr.predict(x_train_sm)
 
-        # adding a constant to the test data for x 
-        x_test_sm = model.add_constant(x_test)
+            # Calculating r squared 
+            from sklearn.metrics import r2_score 
+            r_2_value = r2_score(y_train, y_train_pred)
+            # Now dealing with the test data 
 
-        # predict 
-        y_test_pred = lr.predict(x_test_sm)
+            # adding a constant to the test data for x 
+            x_test_sm = model.add_constant(x_test)
 
-        r_squared  = r2_score(y_test, y_test_pred)
+            # predict 
+            y_test_pred = lr.predict(x_test_sm)
 
-        textbx.insert('0.2', '\nThis is the r squared value from the test data: ' + str(r_squared) + '\n\n'+ 'This is the r squared data from the train data: ' + str(r_2_value) + '\n')
+            r_squared  = r2_score(y_test, y_test_pred)
+
+            textbx.insert('0.2', '\nThis is the r squared value from the test data: ' + str(r_squared) + '\n\n'+ 'This is the r squared data from the train data: ' + str(r_2_value) + '\n')
     
     # Function for clearing the contents of the text field
     def clearContents(self): 
